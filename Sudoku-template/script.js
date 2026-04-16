@@ -18,7 +18,7 @@ Follow the sheet that goes with this exercise
 // TASK 4a: setup the appropriate variables/constants
 const GRIDSIZE = 9
 // TODO: Declare a variable called grid
-const grid = []
+let grid = 81
 
 // TODO: Define a constant called SQUARESIZE with a value of 50,
 const SQUARESIZE = 50
@@ -30,11 +30,10 @@ let gridY = 0
 // TODO: Define two variables - offsetX and offsetY, give them both a value of 70 
 let offsetX = 70
 let offsetY = 70
-
 function setup() {
   createCanvas(windowWidth, windowHeight)
   // text properties
-  textAlign(LEFT, TOP)
+  textAlign(CENTER, CENTER)
   textSize(SQUARESIZE)
   initGame()
 }
@@ -54,7 +53,14 @@ function draw() {
 
 
   // TASK 4c: create 2 nested loops to iterate through all elements of the 2d array, and draw the array value at the correct location.
-
+  for (let row = 0; row < GRIDSIZE; row++) {
+    for (let col = 0; col < GRIDSIZE; col++) {
+      const value = grid[row][col]
+      if (value !== "") {
+        text(value, col * SQUARESIZE + offsetX + 25, row * SQUARESIZE + offsetY + 29)
+      }
+    }
+  }
   // TODO: start first loop here, ensure its loop index goes from 0 to 8 - this is the row number
 
   // TODO: start second loop here, its loop index also should go from 0 to 8 - this is the column number
@@ -70,37 +76,40 @@ function draw() {
   // TODO: use a loop from 0 to 3
   // TODO: draw a horizontal line across the puzzle at correct height
   // TODO: draw a vertical line down the puzzle at correct offset
-
+  for (let i = 0; i <= GRIDSIZE; i += 3) {
+    line(offsetX, i * SQUARESIZE + offsetY, GRIDSIZE * SQUARESIZE + offsetX, i * SQUARESIZE + offsetY)
+    line(i * SQUARESIZE + offsetX, offsetY, i * SQUARESIZE + offsetX, GRIDSIZE * SQUARESIZE + offsetY)
+  }
 }
+  function mouseMoved() {
+    // TASK 4d: convert the mouse coordinates to grid coordinates
+    // TODO: use division and floor function to calculate which row and column of the grid the mouse is in, store these in gridY and gridX respectivel
+    // 
 
-function mouseMoved() {
-  // TASK 4d: convert the mouse coordinates to grid coordinates
-  // TODO: use division and floor function to calculate which row and column of the grid the mouse is in, store these in gridY and gridX respectively
+  }
 
-}
+  function keyPressed() {
+    // When a key is pressed this function runs, the pressed key as stored in the key variable
 
-function keyPressed() {
-  // When a key is pressed this function runs, the pressed key as stored in the key variable
+    // TASK 4e: insert user input into the grid. 
+    // TODO: if it is a single digit in range 1-9 then insert the given value at the currently selected grid coordinate
 
-  // TASK 4e: insert user input into the grid. 
-  // TODO: if it is a single digit in range 1-9 then insert the given value at the currently selected grid coordinate
+  }
 
-}
-
-function initGame() {
-  // TASK 4b: prepare 2d array to hold sudoku grid values
-  // TODO: modify the grid values to match the sudoku grid.png
-  // Leave blank square as ""
-  // First line is done for you
-  grid = [
-    ["5", "3", "", "", "7", "", "", "", ""],
-    ["6", "", "", "1", "9", "5", "", "", ""],
-    ["", "9", "8", "", "", "", "", "6", ""],
-    ["8", "", "", "", "6", "", "", "", "3"],
-    ["4", "", "", "8", "", "3", "", "", ""],
-    ["7", "", "", "", "2", "", "", "", "6"],
-    ["", "6", "", "", "", "", "2", "8", ""],
-    ["", "", "", "4", "1", "9", "", "", "5"],
-    ["", "", "", "", "8", "", "", "7", "9"]
-  ]
-}
+  function initGame() {
+    // TASK 4b: prepare 2d array to hold sudoku grid values
+    // TODO: modify the grid values to match the sudoku grid.png
+    // Leave blank square as ""
+    // First line is done for you
+    grid = [
+      ["5", "3", "", "", "7", "", "", "", ""],
+      ["6", "", "", "1", "9", "5", "", "", ""],
+      ["", "9", "8", "", "", "", "", "6", ""],
+      ["8", "", "", "", "6", "", "", "", "3"],
+      ["4", "", "", "8", "", "3", "", "", ""],
+      ["7", "", "", "", "2", "", "", "", "6"],
+      ["", "6", "", "", "", "", "2", "8", ""],
+      ["", "", "", "4", "1", "9", "", "", "5"],
+      ["", "", "", "", "8", "", "", "7", "9"]
+    ]
+  }
