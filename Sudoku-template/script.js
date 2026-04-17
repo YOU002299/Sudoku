@@ -30,6 +30,12 @@ let gridY = 0
 // TODO: Define two variables - offsetX and offsetY, give them both a value of 70 
 let offsetX = 70
 let offsetY = 70
+
+let MouseHover
+
+// Variables to track selected square
+let selectedGridX = -1
+let selectedGridY = -1
 function setup() {
   createCanvas(windowWidth, windowHeight)
   // text properties
@@ -40,27 +46,40 @@ function setup() {
 
 function draw() {
   background('white')
+
+  // highlight hovered row and column
+  if (gridX >= 0 && gridX <= 8 && gridY >= 0 && gridY <= 8) {
+    push()
+    noStroke()
+    fill(200, 200, 200, 100)
+    rect(offsetX, gridY * SQUARESIZE + offsetY, GRIDSIZE * SQUARESIZE, SQUARESIZE)
+    rect(gridX * SQUARESIZE + offsetX, offsetY, SQUARESIZE, GRIDSIZE * SQUARESIZE)
+    pop()
+  }
+
+  // highlight clicked square
+  if (selectedGridX >= 0 && selectedGridX <= 8 && selectedGridY >= 0 && selectedGridY <= 8) {
+    push()
+    noStroke()
+    fill(211, 211, 211, 180)
+    pop()
+  }
+
   // this code will draw the board once the variables and constatns are defined
   for (let a = 0; a <= GRIDSIZE; a++) {
     // draw  vertical lines
+    if(a % 3 ==0){
+      strokeWeight(3)
+    }else{
+      strokeWeight(1)
+    }
     line(a * SQUARESIZE + offsetX, offsetY, a * SQUARESIZE + offsetX, GRIDSIZE * SQUARESIZE + offsetY)
     // draw horizontal lines
     line(offsetX, a * SQUARESIZE + offsetY, GRIDSIZE * SQUARESIZE + offsetX, a * SQUARESIZE + offsetY)
   }
 
-  // TASK 4d: indicate mouse position in grid
-  // TODO: if gridX and gridY are in bounds (between 0 and 8) draw a coloured square in the grid to highlight that part
-
-
   // TASK 4c: create 2 nested loops to iterate through all elements of the 2d array, and draw the array value at the correct location.
-  for (let row = 0; row < GRIDSIZE; row++) {
-    for (let col = 0; col < GRIDSIZE; col++) {
-      const value = grid[row][col]
-      if (value !== "") {
-        text(value, col * SQUARESIZE + offsetX + 25, row * SQUARESIZE + offsetY + 29)
-      }
-    }
-  }
+
   // TODO: start first loop here, ensure its loop index goes from 0 to 8 - this is the row number
 
   // TODO: start second loop here, its loop index also should go from 0 to 8 - this is the column number
@@ -70,22 +89,40 @@ function draw() {
   // TODO: finish the second loop
 
   // TODO: finish the first loop
+    for (let row = 0; row < GRIDSIZE; row++) {
+    for (let col = 0; col < GRIDSIZE; col++) {
+      const value = grid[row][col]
+      if (value !== "") {
+        text(value, col * SQUARESIZE + offsetX + 25, row * SQUARESIZE + offsetY + 29)
+      }
+    }
+  }
 
 
   // TASK 4c: draw a set of slightly thicker lines to outline the 3squares
   // TODO: use a loop from 0 to 3
   // TODO: draw a horizontal line across the puzzle at correct height
   // TODO: draw a vertical line down the puzzle at correct offset
-  for (let i = 0; i <= GRIDSIZE; i += 3) {
-    line(offsetX, i * SQUARESIZE + offsetY, GRIDSIZE * SQUARESIZE + offsetX, i * SQUARESIZE + offsetY)
-    line(i * SQUARESIZE + offsetX, offsetY, i * SQUARESIZE + offsetX, GRIDSIZE * SQUARESIZE + offsetY)
-  }
+
 }
   function mouseMoved() {
     // TASK 4d: convert the mouse coordinates to grid coordinates
-    // TODO: use division and floor function to calculate which row and column of the grid the mouse is in, store these in gridY and gridX respectivel
-    // 
+    const x = floor((mouseX - offsetX) / SQUARESIZE)
+    const y = floor((mouseY - offsetY) / SQUARESIZE)
 
+    if (x >= 0 && x < GRIDSIZE && y >= 0 && y < GRIDSIZE) {
+      gridX = x
+      gridY = y
+    } else {
+      gridX = -1
+      gridY = -1
+    }
+  }
+
+  function mousePressed() {
+    // Store the clicked square coordinates
+    selectedGridX = floor((mouseX - offsetX) / SQUARESIZE)
+    selectedGridY = floor((mouseY - offsetY) / SQUARESIZE)
   }
 
   function keyPressed() {
@@ -93,6 +130,9 @@ function draw() {
 
     // TASK 4e: insert user input into the grid. 
     // TODO: if it is a single digit in range 1-9 then insert the given value at the currently selected grid coordinate
+    if (key >= '1' && key <= '9' && selectedGridX >= 0 && selectedGridX < GRIDSIZE && selectedGridY >= 0 && selectedGridY < GRIDSIZE) {
+    
+    }
 
   }
 
@@ -106,7 +146,7 @@ function draw() {
       ["6", "", "", "1", "9", "5", "", "", ""],
       ["", "9", "8", "", "", "", "", "6", ""],
       ["8", "", "", "", "6", "", "", "", "3"],
-      ["4", "", "", "8", "", "3", "", "", ""],
+      ["4", "", "", "8", "", "3", "", "", "1"],
       ["7", "", "", "", "2", "", "", "", "6"],
       ["", "6", "", "", "", "", "2", "8", ""],
       ["", "", "", "4", "1", "9", "", "", "5"],
